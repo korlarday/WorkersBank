@@ -1,0 +1,64 @@
+﻿@model WorkersBank.Models.ViewModel.LoginVM
+
+@{
+    ViewBag.Title = "Login";
+}
+
+
+
+
+<!-- Content
+============================================= -->
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+
+            <div class="row">
+                <div class="card col-md-6 offset-md-3">
+                    <div class="card-body" style="padding: 40px;">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <h3>Login to your Account</h3>
+
+                            <div class="col_full">
+                                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col_full">
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                                @Html.PasswordFor(model => model.Password,new { @class = "form-control" } )
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col_full">
+                                @Html.CheckBoxFor(model => model.RememberMe)
+                                @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "control-label" })
+                                @Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col_full nobottommargin">
+                                <button class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+                                <a href="#" class="fright">Forgot Password?</a>
+                            </div>
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+

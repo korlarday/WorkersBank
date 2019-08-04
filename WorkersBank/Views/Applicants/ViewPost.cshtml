@@ -1,0 +1,48 @@
+﻿@model WorkersBank.Models.ViewModel.JobPostVM
+
+@{
+    ViewBag.Title = "View Post";
+}
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>View Job Details</h3>
+                    </div>
+                    @if (TempData["SM"] != null)
+                    {
+                        <div class="style-msg successmsg">
+                            <div class="sb-msg">@TempData["SM"]</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="process_style col-md-8 offset-md-2">
+                            @if (User.IsInRole("Seeker"))
+                            {
+                                <a href="/Applicants/apply-for-job/@Model.Slug" class="btn btn-success btn-sm fright">Apply</a>
+                            }
+                            
+                            <h4 style="margin-bottom: 0">Name Of Organization:</h4>
+                            <div class="seekerInfo" style="margin-bottom: 25px">@Model.NameOfOrganisation</div>
+
+                            <h4>Address:</h4>
+                            <div class="seekerInfo">@Html.Raw(Model.Address)</div>
+
+                            <h4>Description:</h4>
+                            <div class="seekerInfo">@Html.Raw(Model.Description)</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->

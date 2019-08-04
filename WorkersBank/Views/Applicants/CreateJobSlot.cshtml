@@ -1,0 +1,79 @@
+﻿@model WorkersBank.Models.ViewModel.JobPostVM
+
+@{
+    ViewBag.Title = "CreateJobSlot";
+}
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>Create New Job Application</h3>
+                    </div>
+
+                    <div class="process_style col-md-6 offset-md-3">
+                        @using (Html.BeginForm("create-job-slot", "Applicants", FormMethod.Post))
+                        {
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                            @Html.AntiForgeryToken()
+
+                            <div class="col-12 form-group mb-4">
+                                @Html.LabelFor(model => model.NameOfOrganisation, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.NameOfOrganisation, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                @Html.ValidationMessageFor(model => model.NameOfOrganisation, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-12 form-group mb-4">
+                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control" } )
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-12 form-group mb-4">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" } )
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="offset-sm-5">
+                                <button type="submit" class="button button-3d bg-blue submit">Create Application</button>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+
+
+@section Scripts{
+    <script src="~/Scripts/ckeditor.js"></script>
+    <script>
+        $(function () {
+            ClassicEditor
+                .create(document.querySelector('#Address'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#Description'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+}

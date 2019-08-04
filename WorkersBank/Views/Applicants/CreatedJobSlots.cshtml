@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WorkersBank.Models.ViewModel.JobPostVM>
+
+@{
+    ViewBag.Title = "CreatedJobSlots";
+}
+
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>Job Slots Created</h3>
+                    </div>
+                    @if (TempData["SM"] != null)
+                    {
+                        <div class="style-msg successmsg">
+                            <div class="sb-msg">@TempData["SM"]</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    }
+                    <div class="row">
+                        @if (!Model.Any())
+                        {
+                            <h5 class="ml-3">You have not created any job slots.</h5>
+                            <p style="margin-left: 20px;">Create New Job Slot</p>
+                        }
+                        else
+                        {
+                            <div class="table-responsive mt-2">
+                                <table class="table table-hover" style="text-align: center">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name Of Company</th>
+                                            <th>Date Created</th>
+                                            <th>Applicants Applied</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int count = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@count</td>
+                                                    <td>@item.NameOfOrganisation</td>
+                                                    <td>@item.TimeCreated.ToLongDateString()</td>
+                                                    <td>@item.NumberApplied</td>
+                                                    <td><a href="/" class="btn btn-success btn-sm">View</a></td>
+                                                </tr>
+                                                ++count;
+                                            }
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+
+
+@section Scripts{
+    <script src="~/Content/User/js/components/moment.js"></script>
+    <script>
+        $(function () {
+            
+        });
+    </script>
+}

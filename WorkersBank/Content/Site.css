@@ -1,0 +1,19 @@
+﻿.registerPage .form-item {
+    margin-bottom: 28px;
+}
+.required-red{
+    color: red;
+    font-size: 1.2em;
+}
+
+.process_style {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 15px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.seekerInfo{
+    padding: 15px;
+}

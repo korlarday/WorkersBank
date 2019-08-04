@@ -1,0 +1,653 @@
+﻿@model WorkersBank.Models.ViewModel.ProfileInfo
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "RegisterAsHirer";
+}
+
+<!-- Radio Checkbox Plugin -->
+<link rel="stylesheet" href="~/Content/User/css/components/radio-checkbox.css" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("~/Content/User/css/components/datepicker.css")" type="text/css" />
+
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            @if (TempData["SM"] != null)
+            {
+                <div class="style-msg successmsg">
+                    <div class="sb-msg">@TempData["SM"]</div>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                </div>
+            }
+            <div class="row">
+
+                <div class="tabs tabs-bb clearfix col-md-12" id="tab-9">
+
+                    <ul class="tab-nav clearfix">
+                        <li><a href="#tabs-basic">Basic</a></li>
+                        @if (User.IsInRole("Seeker"))
+                        {
+                            <li><a href="#tabs-career">Career</a></li>
+                            <li><a href="#tabs-jobs">Jobs</a></li>
+                            <li><a href="#tabs-cv">CV</a></li>
+
+                        }
+                        @if (User.IsInRole("Hirer"))
+                        {
+                            <li><a href="#tabs-company">Company Information</a></li>
+                        }
+                    </ul>
+
+                    <div class="tab-container">
+
+                        <div class="tab-content clearfix" id="tabs-basic">
+                            <div>
+                                <div class="row process_style col-md-8 offset-md-2">
+                                    <div class="col-md-6 offset-md-1" style="max-width: 150px;">
+                                        @if (Model.User.PassportName == null)
+                                        {
+                                            <img style="width: 100%" src="/Images/img/avatar.jpg" alt="passport" />
+                                        }
+                                        else
+                                        {
+                                            <img style="width: 100%" src="/Images/Uploads/Passports/@Model.User.Id/Thumbs/@Model.User.PassportName" alt="passport" />
+                                        }
+                                    </div>
+                                    <div class="col-md-4 offset-md-1" style="margin-top: 15px">
+                                        <button class="btn btn-success btn-sm" id="changePassport">Change Passport</button>
+                                        <div id="changePassportView">
+                                            @using (Html.BeginForm("ChangePassport", "Accounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="col-12 col-sm-6 form-group mb-4">
+                                                    @Html.LabelFor(model => model.Passport, htmlAttributes: new { @class = "control-label" })
+                                                    @Html.TextBoxFor(model => model.Passport, " ", new { @type = "file", id = "passport" })
+                                                    @Html.ValidationMessageFor(model => model.Passport, "", new { @class = "text-danger" })
+
+                                                </div>
+                                                <button type="submit" class="btn btn-info btn-sm mr-4">Submit</button>
+                                                <button type="button" class="btn btn-danger btn-sm" id="passportCancel">Cancel</button>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 offset-md-1 mt-5">
+                                        <h4>Basic Information:</h4>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <td>@Model.User.Firstname @Model.User.Middlename @Model.User.Surname</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Username</th>
+                                                        <td>@Model.User.Username</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Date Of Birth</th>
+                                                        <td>@Model.User.DOB.ToLongDateString()</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>State Of Origin</th>
+                                                        <td>@Model.User.StateOfOrigin</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Gender</th>
+                                                        <td>@Model.User.Gender</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td>@Model.User.Email</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Phone Number</th>
+                                                        <td>@Model.User.PhoneNumber</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <a href="#" class="btn btn-success btn-sm offset-md-4" id="EditBasicInfo">Edit Basic Info</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (User.IsInRole("Seeker"))
+                        {
+                            <div class="tab-content clearfix" id="tabs-career">
+                                @if (Model.JobSeeker.UserId == 0)
+                                {
+                                    <p>You have not entered career information</p>
+                                    <a href="#" class="btn btn-success btn-sm offset-md-4" data-toggle="modal" data-target="#careerModal">Enter Career Details</a>
+
+                                }
+                                else
+                                {
+                                    <div class="process_style col-md-8 offset-md-2">
+                                        <h4 style="margin-bottom: 0">Last Institution Attended:</h4>
+                                        <div class="seekerInfo" style="margin-bottom: 25px">@Model.JobSeeker.LastInstitution</div>
+
+                                        <h4>Qualification:</h4>
+                                        <div class="seekerInfo">@Html.Raw(Model.JobSeeker.Qualification)</div>
+
+                                        <h4>Work Experience:</h4>
+                                        <div class="seekerInfo">@Html.Raw(Model.JobSeeker.WorkExperience)</div>
+
+                                        <h4>Skills Acquired:</h4>
+                                        <div class="seekerInfo">@Html.Raw(Model.JobSeeker.SkillsAcquired)</div>
+
+                                        <a href="#" class="btn btn-success btn-sm offset-md-4" data-toggle="modal" data-target="#careerModal">Edit Career Info</a>
+                                    </div>
+
+                                }
+                            </div>
+                            <div class="tab-content clearfix" id="tabs-jobs">
+                                @if (!Model.Jobs.Any())
+                                {
+                                    <p>You need to select at least one job of interest.</p>
+                                    <a href="#" class="btn btn-success btn-sm offset-md-4" data-toggle="modal" data-target="#jobModal">Select Jobs</a>
+                                }
+                                else
+                                {
+                                    <div class="process_style col-md-8 offset-md-2">
+                                        <h4 style="margin-bottom: 0">Selected Job(s) of Interest:</h4>
+                                        <div class="seekerInfo">
+                                            <ul>
+                                                @foreach (var item in Model.Jobs)
+                                                {
+                                                    <li>@item.Jobs.JobName</li>
+                                                }
+                                            </ul>
+                                        </div>
+
+                                        <a href="#" class="btn btn-success btn-sm offset-md-4" data-toggle="modal" data-target="#jobModal">Edit Jobs Info</a>
+                                    </div>
+                                }
+                            </div>
+                            <div class="tab-content clearfix" id="tabs-cv">
+                                <div class="process_style col-md-8 offset-md-2">
+                                     @if (String.IsNullOrEmpty(Model.User.CV))
+                                     {
+                                         <p>You have not yet uploaded your CV.</p>
+                                     }
+                                     else
+                                     {
+                                         <p>Your CV has been uploaded successfully. <a href="/Accounts/DownloadCV/@Model.User.Username">Click here to download</a></p>
+                                     }
+                                    @using (Html.BeginForm("UploadCV", "Accounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="col-12 col-sm-6 form-group mb-4">
+                                            <label class="control-label" for="CV">Upload Your CV</label>
+                                            <input type="file" id="CV" name="CV" required />
+
+                                        </div>
+                                        <button type="submit" class="btn btn-info btn-sm mr-4">Submit</button>
+                                    }
+                            
+                                </div>
+                            </div>
+                        }
+                        @if (User.IsInRole("Hirer"))
+                        {
+                            <div class="tab-content clearfix" id="tabs-company">
+                                <div class="process_style col-md-8 offset-md-2">
+                                    <h4 style="margin-bottom: 0">Name Of Organization:</h4>
+                                    <div class="seekerInfo" style="margin-bottom: 25px">@Model.Hirer.NameOfOrganisation</div>
+
+                                    <h4>Address:</h4>
+                                    <div class="seekerInfo">@Html.Raw(Model.Hirer.Address)</div>
+
+                                    <h4>Description:</h4>
+                                    <div class="seekerInfo">@Html.Raw(Model.Hirer.Description)</div>
+
+                                    <a href="#" class="btn btn-success btn-sm offset-md-4" data-toggle="modal" data-target="#hirerModal">Edit Company Info</a>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+<!-- Modal Basic Details -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Edit Basic Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    @using (Html.BeginForm("UpdateBasicInformation", "Accounts", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="registerPage">
+
+                            <div class="form-item">
+                                <label for="firstname" class="control-label">First Name</label><span class="required-red">*</span>
+                                <input type="text" id="firstname" name="Firstname" value="@Model.User.Firstname" class="form-control" required />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="surname" class="control-label">Surname</label><span class="required-red">*</span>
+                                <input type="text" id="surname" name="Surname" value="@Model.User.Surname" class="form-control" required />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="middlename" class="control-label">Middle Name</label>
+                                <input type="text" id="middlename" name="Middlename" value="@Model.User.Middlename" class="form-control" />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="dob" class="control-label">Date Of Birth</label><span class="required-red">*</span>
+                                <input type="text" id="dob" name="DOB" value="@Model.User.DOB.ToShortDateString()" class="form-control text-left format" required />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="state">State Of Origin:</label> <span class="required-red">*</span>
+                                <select class="form-control" id="state" name="StateOfOrigin" required>
+                                    <option value="" selected>-- Select your state --</option>
+                                </select>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="phonenumber" class="control-label">Phone Number</label><span class="required-red">*</span>
+                                <input type="text" id="phonenumber" name="PhoneNumber" value="@Model.User.PhoneNumber" class="form-control" required />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="email" class="control-label">Email</label><span class="required-red">*</span>
+                                <input type="email" id="email" name="Email" value="@Model.User.Email" class="form-control" required />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="username" class="control-label">First Name</label><span class="required-red">*</span>
+                                <input type="text" id="username" name="Username" value="@Model.User.Username" class="form-control" required />
+                            </div>
+
+                            <div class="form-item">
+                                <div style="margin-left: 15px;">
+                                    <label>Gender</label> <span class="required-red">*</span>
+                                    <div style="margin-bottom: 0px">
+                                        @if (Model.User.Gender == "Male")
+                                        {
+                                            <input type="radio" name="Gender" class="radio-style" id="male" value="Male" checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" name="Gender" class="radio-style" id="male" value="Male" />
+                                        }
+                                        <label for="male" class="radio-style-1-label radio-small">Male</label>
+                                    </div>
+                                    <div>
+                                        @if (Model.User.Gender == "Female")
+                                        {
+                                            <input type="radio" name="Gender" class="radio-style" id="female" value="Female" checked />
+
+                                        }
+                                        else
+                                        {
+
+                                            <input type="radio" name="Gender" class="radio-style" id="female" value="Female" />
+                                        }
+                                        <label for="female" class="radio-style-1-label radio-small">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col_full" style="margin-left: 20px">
+                                <button type="submit" class="btn btn-info">Update Information</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button style="display: none" id="triggerModal" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch modal</button>
+
+<!-- Modal -->
+<div class="modal fade" id="careerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Career Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    @using (Html.BeginForm("UpdateCareerInformation", "Accounts", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="registerPage">
+
+                            <div class="form-item">
+                                <label for="lastInstitution" class="control-label">Last Institution</label>
+                                <input type="text" id="lastInstitution" name="LastInstitution" value="@Model.JobSeeker.LastInstitution" class="form-control" />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="qualificationE" class="control-label">Qualification</label>
+                                <textarea id="qualificationE" name="Qualification" class="form-control editor">@Model.JobSeeker.Qualification</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="workexperienceE" class="control-label">Work Experience</label>
+                                <textarea id="workexperienceE" name="WorkExperience" class="form-control editor">@Model.JobSeeker.WorkExperience</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="skillsAcquiredE" class="control-label">Skills Acquired</label>
+                                <textarea id="skillsAcquiredE" name="SkillsAcquired" class="form-control editor">@Model.JobSeeker.SkillsAcquired</textarea>
+                            </div>
+
+
+
+
+                            <div class="col_full" style="margin-left: 20px">
+                                <button type="submit" class="btn btn-info">Update Information</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="hirerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Company Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    @using (Html.BeginForm("UpdateCompanyInformation", "Accounts", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="registerPage">
+
+                            <div class="form-item">
+                                <label for="companyName" class="control-label">Name Of Company</label>
+                                <input type="text" id="companyName" name="NameOfOrganisation" value="@Model.Hirer.NameOfOrganisation" class="form-control" />
+                            </div>
+
+                            <div class="form-item">
+                                <label for="addressE" class="control-label">Address</label>
+                                <textarea id="addressE" name="Address" class="form-control editor">@Model.Hirer.Address</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="descriptionE" class="control-label">Description</label>
+                                <textarea id="descriptionE" name="Description" class="form-control editor">@Model.Hirer.Description</textarea>
+                            </div>
+
+                            <div class="col_full" style="margin-left: 20px">
+                                <button type="submit" class="btn btn-info">Update Information</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Jobs Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    @using (Html.BeginForm("UpdateJobInformation", "Accounts", FormMethod.Post, new { id = "jobsForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="style-msg">
+                            <div class="sb-msg">
+                                Select your job type here. You can select up to ten(10) different job types that interests you.
+                                But you are not allowed to select more than ten(10).
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                        <div id="jobsContainer">
+
+                        </div>
+                        <div class="col_full" style="margin-left: 20px;margin-top: 20px;">
+                            <button type="submit" class="btn btn-info btn-sm">Update Information</button>
+                        </div>
+                    }
+                    <p>You didn't find your job type listed? You can recommend different job types to include in the list.</p>
+                    <button id="recommendJob" style="margin-bottom:8px" class="btn btn-success btn-sm">Recommend jobs</button>
+                    <div style="display:none" id="recommendFormContainer">
+                        @using (Html.BeginForm("RecommendJobs", "Accounts", FormMethod.Post, new { id = "recommendForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="style-msg">
+                                <div class="sb-msg">
+                                    You can only recommend up to five(5) job types.
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            </div>
+                            <div id="recommendContainer">
+                                <input type="text" name="jobName[]" style="margin-bottom: 6px" class="form-control" placeholder="Enter Job Name" />
+                            </div>
+                            <button style="margin-top:8px" class="btn btn-success btn-sm fright" id="addJobField">Add Field</button>
+                            <div class="col_full" style="margin-left: 20px;margin-top: 20px;">
+                                <button type="submit" class="btn btn-info btn-sm">Submit</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="cloneMe" class="jobs-control">
+    <input id="checkbox-1" class="checkbox-style" name="job[]" type="checkbox">
+    <label for="checkbox-1" class="checkbox-style-1-label checkbox-small">First Choice</label>
+</div>
+
+
+@section Scripts{
+    <script src="~/Content/User/js/components/moment.js"></script>
+    <script src="~/Content/User/js/components/datepicker.js"></script>
+    <script src="~/Scripts/ckeditor.js"></script>
+    <script>
+        $(function () { 
+            /*
+             * Preview Selected image
+             */
+            $("#changePassportView").hide();
+            $("#changePassport").on("click", function (e) {
+                e.preventDefault();
+                $("#changePassportView").show();
+            });
+
+            $("#passportCancel").on("click", function (e) {
+                e.preventDefault();
+                $("#changePassportView").hide();
+            });
+
+            // when you click on EditBasicInfo button
+            $("#EditBasicInfo").on("click", function (e) {
+                e.preventDefault();
+                $("#triggerModal").click();
+            })
+
+            $('.format').datepicker({
+                autoclose: true,
+                format: "dd-mm-yyyy",
+            });
+
+            // Fetch States
+            fetchStateUrl = "/Accounts/FetchStates"
+            $.ajax({
+                type: "GET",
+                url: fetchStateUrl,
+                success: function (data) {
+                    var $dropdown = $("#state");
+                    $.each(data, function () {
+                        $dropdown.append($("<option />").val(this.State).text(this.State));
+                    })
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Unable to fetch States at the moment.")
+                    //alert(xhr.status);
+                    //alert(thrownError);
+
+                }
+            })
+
+            // Fetch Jobs
+            fetchJobsUrl = "/Accounts/FetchJobs";
+            $.ajax({
+                type: "GET",
+                url: fetchJobsUrl,
+                success: function (data) {
+                    var $container = $("#jobsContainer");
+                    $.each(data.Jobs, function () {
+                        var $element = $("#cloneMe").clone();
+                        $element.find("input").attr("id", this.Id);
+                        $element.find("input").attr("name", "jobs[]");
+                        $element.find("input").val(this.Id);
+                        var $check = data.JobsSelected.includes(this.Id);
+                        if ($check) {
+                            $element.find("input").attr("checked", "checked");
+                        }
+                        $element.find("label").attr("for", this.Id);
+                        $element.find("label").text(this.JobName);
+                        $element.attr("id", "");
+                        $element.show();
+                        $container.append($element);
+                    });
+                    console.log(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Unable to fetch Jobs at the moment.")
+                    //alert(xhr.status);
+                    //alert(thrownError);
+
+                }
+            })
+
+            // When you submit the job form
+            $("#jobsForm").on("submit", function (e) {
+                var $countChecked = $('input[name="jobs[]"]:checked').length;
+                if ($countChecked < 1) {
+                    return false;
+                }
+                if ($countChecked > 10) {
+                    return false;
+                } 
+            })
+
+            // When you click on recommend job button
+            $("#recommendJob").on("click", function (e) {
+                e.preventDefault();
+                $("#recommendFormContainer").show();
+            })
+
+            // When you click on add new job field
+            $("#addJobField").on("click", function (e) {
+                e.preventDefault();
+                var $num = $("#recommendContainer").children('input').length;
+                if ($num < 5) {
+                    var $input = $("#recommendContainer").children('input:last').clone();
+                    $input.val("");
+                    $("#recommendContainer").append($input);
+                }
+            })
+
+            // When you submit the recommendations form
+            $("#recommendForm").on("submit", function () {
+                $firstJob = $("#recommendContainer").children('input:first').val();
+                if ($firstJob == "") {
+                    return false;
+                }
+            })
+
+            // editor
+            ClassicEditor
+                .create(document.querySelector('#qualificationE'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#workexperienceE'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#skillsAcquiredE'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#addressE'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#descriptionE'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        });
+    </script>
+}

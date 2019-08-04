@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WorkersBank.Models.ViewModel.JobPostVM>
+
+@{
+    ViewBag.Title = "JobPosts";
+}
+
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>Job Application</h3>
+                        <p>You can click on the company name to apply</p>
+                    </div>
+                    @if (TempData["SM"] != null)
+                    {
+                        <div class="style-msg successmsg">
+                            <div class="sb-msg">@TempData["SM"]</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    }
+                <div class="row">
+                    <div class="list-group col-md-8 offset-md-2">
+                        @if (Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <a href="/Applicants/view-post/@item.Slug" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h4 class="mb-2">@item.NameOfOrganisation</h4>
+                                        <small><span data-utcdate="@item.TimeCreated.ToString("s", System.Globalization.CultureInfo.InvariantCulture)"></span></small>
+                                    </div>
+                                    <p class="mb-1">@Html.Raw(item.Description)</p>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <p>No Job post has been created.</p>
+                        }
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+
+
+@section Scripts{
+    <script src="~/Content/User/js/components/moment.js"></script>
+    <script>
+        $(function () {
+            $('[data-utcdate]').each(function () {
+            var d = moment($(this).attr('data-utcdate'));
+            $(this).html(d.fromNow());
+            });
+        });
+    </script>
+}
