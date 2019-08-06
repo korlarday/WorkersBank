@@ -16,6 +16,8 @@ namespace WorkersBank.Models.Data
         public string NameOfOrganisation { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
 
         [ForeignKey("UserId")]
         public virtual UsersDTO User { get; set; }

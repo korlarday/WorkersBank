@@ -1,0 +1,5 @@
+﻿@model WorkersBank.Models.ViewModel.InvitationPartialVM
+
+    <li>
+        <a href="@Url.Action("invitations","Applicants")" @(ViewContext.RouteData.Values["action"].ToString().Equals("invitations") ? "class=selected_nav" : "")><div>Invitations<span style="display:inline;position:relative;top:-8px" class="badge badge-success">@Model.InvitationCount</span></div></a>
+    </li>

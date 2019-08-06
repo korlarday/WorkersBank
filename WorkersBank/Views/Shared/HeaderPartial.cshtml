@@ -34,6 +34,10 @@
                                 </ul>
                             </li>
                         }
+                        @if (Request.IsAuthenticated && User.IsInRole("Seeker"))
+                        {
+                            @Html.Action("InvitationPartial", "Applicants", new { area = "" })
+                        }
                         @if (Request.IsAuthenticated && User.IsInRole("Hirer"))
                         {
                             <li>

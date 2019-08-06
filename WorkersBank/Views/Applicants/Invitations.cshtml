@@ -1,0 +1,203 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Invitations";
+}
+
+@model IEnumerable<WorkersBank.Models.ViewModel.JobAppliedVM>
+
+
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>Invitations</h3>
+                    </div>
+                    @if (TempData["SM"] != null)
+                    {
+                        <div class="style-msg successmsg">
+                            <div class="sb-msg">@TempData["SM"]</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="list-group col-md-8 offset-md-2" id="invitations">
+                            @if (Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start invite">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h4 class="mb-2">
+                                                @item.Subject
+                                                @if (item.UserRespond == false)
+                                                {
+                                                    <span class="badge badge-pill badge-success" style="margin-left: 15px">New</span>
+                                                }
+                                            </h4>
+                                            <small><span class="momentTime">@item.TimeSent</span></small>
+                                        </div>
+                                        <div style="display:none" class="responseId">@item.Id</div>
+                                        <div style="display:none" class="subject">@item.Subject</div>
+                                        <div style="display:none" class="theMessage">@Html.Raw(item.Message)</div>
+                                        <div style="display:none" class="userRespond">@item.UserRespond</div>
+                                        <div style="display:none" class="accept">@item.Accept</div>
+                                        <div style="display:none" class="reject">@item.Reject</div>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <p>You have no job invitations message.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Job Invitation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    <div class="tab-content clearfix" id="tabs-company">
+                        <div class="process_style col-md-10 offset-md-1">
+                            <span style="display:none" id="renderId"></span>
+                            <span style="display:none" id="renderAccept"></span>
+                            <span style="display:none" id="renderReject"></span>
+                            <span style="display:none" id="renderUserRespond"></span>
+
+                            <h4 style="display: none;color:green" id="accepted">Accepted</h4>
+                            <h4 style="display: none;color:red" id="rejected">Rejected</h4>
+
+                            <h4 style="margin-bottom: 0">Subject:</h4>
+                            <div id="renderSubject" style="margin-bottom: 25px"></div>
+
+                            <h4>Message:</h4>
+                            <div id="renderMessage"></div>
+
+                            <div id="response">
+                                <button class="btn btn-success btn-sm mr-2" id="acceptInvitation">Accept</button>
+                                <button class="btn btn-danger btn-sm mr-2" id="rejectedInvitation">Reject</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button style="display: none" id="triggerModal" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch modal</button>
+
+
+@section Scripts{
+    <script src="~/Content/User/js/components/moment.js"></script>
+    <script>
+        $(function () {
+            $('.momentTime').each(function () {
+                var d = moment($(this).text(), 'DD-MM-YYYY');
+                $(this).text(d.fromNow());
+            });
+
+            // When you click on an invitation link
+            $("#invitations").on("click", ".invite", function (e) {
+                var $this = $(this);
+                $theMessage = $this.find(".theMessage").html();
+                $subject = $this.find(".subject").text();
+                $renderId = $this.find(".responseId").text();
+                $renderUserRespond = $this.find(".userRespond").text();
+                $renderAccept = $this.find(".accept").text();
+                $renderReject = $this.find(".reject").text();
+
+                $("#renderSubject").text($subject);
+                $("#renderMessage").html($theMessage);
+                $("#renderUserRespond").html($renderUserRespond);
+                $("#renderAccept").html($renderAccept);
+                $("#renderReject").html($renderReject);
+                $("#renderId").html($renderId);
+
+
+                if ($renderUserRespond == "False") {
+                    $("#response").show();
+                    $("#accepted").hide();
+                    $("#rejected").hide();
+                }
+                else {
+                    if ($renderAccept == "True") {
+                        // Accepted
+                        $("#response").hide();
+                        $("#accepted").show();
+                        $("#rejected").hide();
+                    }
+                    else {
+                        // Rejected
+                        $("#response").hide();
+                        $("#accepted").hide();
+                        $("#rejected").show();
+                    }
+                }
+                $("#triggerModal").click();
+            })
+
+            // When you click on Accept invitation
+            $("#acceptInvitation").on("click", function (e) {
+                e.preventDefault();
+                var id = $("#renderId").text();
+                $.ajax({
+                type: "POST",
+                url: "/Applicants/AcceptInvitation",
+                data: {id: id},
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Unable to accept invitation at the moment.")
+                    //alert(xhr.status);
+                    //alert(thrownError);
+
+                }
+            });
+            })
+
+            // When you click on Reject invitation
+            $("#rejectInvitation").on("click", function (e) {
+                e.preventDefault();
+                var id = $("#renderId").text();
+                $.ajax({
+                type: "POST",
+                url: "/Applicants/RejectInvitation",
+                data: {id: id},
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Unable to reject invitation at the moment.")
+                    //alert(xhr.status);
+                    //alert(thrownError);
+
+                }
+            });
+            })
+        });
+    </script>
+}
+
+
+

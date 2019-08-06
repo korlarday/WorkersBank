@@ -144,6 +144,7 @@
     <Compile Include="Models\Data\JobPostDTO.cs" />
     <Compile Include="Models\Data\JobsDTO.cs" />
     <Compile Include="Models\Data\JobSeekersDTO.cs" />
+    <Compile Include="Models\Data\MailsDTO.cs" />
     <Compile Include="Models\Data\RolesDTO.cs" />
     <Compile Include="Models\Data\SeekerJobDTO.cs" />
     <Compile Include="Models\Data\SpecifiedJobsDTO.cs" />
@@ -152,18 +153,23 @@
     <Compile Include="Models\ViewModel\ChangePassport.cs" />
     <Compile Include="Models\ViewModel\FetchJobs.cs" />
     <Compile Include="Models\ViewModel\HirerVM.cs" />
+    <Compile Include="Models\ViewModel\InvitationPartialVM.cs" />
     <Compile Include="Models\ViewModel\JobAppliedVM.cs" />
     <Compile Include="Models\ViewModel\JobPostVM.cs" />
     <Compile Include="Models\ViewModel\JobSeekersVM.cs" />
     <Compile Include="Models\ViewModel\JobsVM.cs" />
     <Compile Include="Models\ViewModel\LoginVM.cs" />
+    <Compile Include="Models\ViewModel\MailsVM.cs" />
     <Compile Include="Models\ViewModel\ProfileInfo.cs" />
     <Compile Include="Models\ViewModel\RegisterHirer.cs" />
     <Compile Include="Models\ViewModel\RegisterSeeker.cs" />
+    <Compile Include="Models\ViewModel\SearchVM.cs" />
     <Compile Include="Models\ViewModel\SeekerJobVM.cs" />
     <Compile Include="Models\ViewModel\SpecifiedJobsVM.cs" />
     <Compile Include="Models\ViewModel\StateData.cs" />
     <Compile Include="Models\ViewModel\UsersVM.cs" />
+    <Compile Include="Models\ViewModel\ViewApplicantsVM.cs" />
+    <Compile Include="Models\ViewModel\ViewProfileVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7839,6 +7845,10 @@
     <Content Include="Views\Applicants\CreateJobSlot.cshtml" />
     <Content Include="Views\Applicants\JobPosts.cshtml" />
     <Content Include="Views\Applicants\ViewPost.cshtml" />
+    <Content Include="Views\Applicants\ViewApplicants.cshtml" />
+    <Content Include="Views\Applicants\ViewProfile.cshtml" />
+    <Content Include="Views\Applicants\InvitationPartial.cshtml" />
+    <Content Include="Views\Applicants\Invitations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\User\include\twitter\cache\" />

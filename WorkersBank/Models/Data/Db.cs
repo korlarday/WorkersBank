@@ -18,6 +18,7 @@ namespace WorkersBank.Models.Data
         public DbSet<UserRolesDTO> UserRoles { get; set; }
         public DbSet<JobPostDTO> JobPosts { get; set; }
         public DbSet<JobAppliedDTO> JobApplieds { get; set; }
+        public DbSet<MailsDTO> Mails { get; set; }
 
     }
 }

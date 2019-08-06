@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WorkersBank.Models.Data;
+using WorkersBank.Models.ViewModel;
 
 namespace WorkersBank.Controllers
 {
@@ -10,27 +12,15 @@ namespace WorkersBank.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            SearchVM model = new SearchVM();
+            using(Db db = new Db())
+            {
+                // Fetch all the list
+                model.Jobs = new SelectList(db.Jobs.ToList(), "Id", "JobName");
+            }
+            return View(model);
         }
 
-        public ActionResult Features()
-        {
-            return View();
-        }
-
-        public ActionResult Benefits()
-        {
-            return View();
-        }
-
-        public ActionResult FAQ()
-        {
-            return View();
-        }
-
-        public ActionResult SubMenuPartial()
-        {
-            return PartialView();
-        }
+        
     }
 }

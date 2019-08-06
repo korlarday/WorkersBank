@@ -20,6 +20,8 @@ namespace WorkersBank.Models.ViewModel
             NameOfOrganisation = row.NameOfOrganisation;
             Address = row.Address;
             Description = row.Description;
+            Subject = row.Subject;
+            Message = row.Message;
         }
 
         public int Id { get; set; }
@@ -29,5 +31,9 @@ namespace WorkersBank.Models.ViewModel
         public string Address { get; set; }
         [AllowHtml]
         public string Description { get; set; }
+        [AllowHtml]
+        public string Subject { get; set; }
+        [AllowHtml]
+        public string Message { get; set; }
     }
 }

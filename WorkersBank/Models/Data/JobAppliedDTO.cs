@@ -15,6 +15,13 @@ namespace WorkersBank.Models.Data
         public int JobPostId { get; set; }
         public int UserId { get; set; }
         public DateTime TimeApplied { get; set; }
+        public bool InvitationSent { get; set; }
+        public bool UserRespond { get; set; }
+        public bool Accept { get; set; }
+        public bool Reject { get; set; }
+        public DateTime? TimeSent { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
 
         [ForeignKey("JobPostId")]
         public virtual JobPostDTO JobPost { get; set; }

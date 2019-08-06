@@ -1,0 +1,221 @@
+﻿@model WorkersBank.Models.ViewModel.ViewApplicantsVM
+
+@{
+    ViewBag.Title = "View Applicants";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="fancy-title title-bottom-border">
+                        <h3>View Applicants</h3>
+                    </div>
+                    @if (TempData["SM"] != null)
+                    {
+                        <div class="style-msg successmsg">
+                            <div class="sb-msg">@TempData["SM"]</div>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    }
+                    <div class="row">
+                        <div>
+                            Company's Name: @Model.Job.NameOfOrganisation <br />
+                            Number of Applicants: @Model.Job.NumberApplied
+                        </div>
+                        @if (!Model.Applicants.Any())
+                        {
+                            <h5 class="ml-3">No Job applicants have applied yet.</h5>
+                        }
+                        else
+                        {
+                            <div class="table-responsive mt-2">
+                                <table class="table table-hover" style="text-align: center">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name Of Applicants</th>
+                                            <th>Date Applied</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="applicantsBody">
+                                        @{
+                                            int count = 1;
+                                            foreach (var item in Model.Applicants)
+                                            {
+                                                <tr>
+                                                    <td>@count</td>
+                                                    <td class="userName"><a href="/Applicants/view-profile/@item.User.Username">@item.User.Firstname @item.User.Surname</a></td>
+                                                    <td>@item.TimeApplied.ToLongDateString()</td>
+                                                    <td>
+                                                        @if (item.InvitationSent == true && item.UserRespond == false)
+                                                        {
+                                                            <span>Invitation Sent</span>
+                                                        }
+                                                        @if (item.InvitationSent == true && item.UserRespond == true)
+                                                        {
+                                                            if (item.Accept)
+                                                            {
+                                                                <span>Accepted</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Rejected</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-success btn-sm invite">Invite</a>
+                                                    </td>
+                                                    <td class="userEmail" style="display:none">@item.User.Email</td>
+                                                    <td class="userId" style="display:none">@item.User.Username</td>
+                                                </tr>
+                                                ++count;
+                                            }
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- #content end -->
+
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Send Mail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 30px">
+                    @using (Html.BeginForm("SendMail", "Applicants", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="registerPage">
+                            <p>Send invitation mail to <span id="recipientName"></span></p>
+                            <p>Recipient Email Address: <span id="recipientEmail"></span></p>
+
+                            <input type="hidden" name="Username" id="formUsername"/>
+                            <input type="hidden" name="Slug" value="@Model.Job.Slug" />
+
+                            <div class="form-item">
+                                <label for="subject" class="control-label">Subject</label>
+                                <input type="text" id="subject" name="Subject" class="form-control" value="@Model.Hirer.Subject" required/>
+                            </div>
+
+                            <div class="form-item">
+                                <small>
+                                    Please add all vital information for the interview including
+                                    time, date and venue of interview.
+                                </small>
+                                <label for="message" class="control-label">Message</label>
+                                <textarea id="message" name="Message" class="form-control">@Model.Hirer.Message</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="nameOfCompany" class="control-label">Name Of Company</label>
+                                <input id="nameOfCompany" name="NameOfCompany" value="@Model.Hirer.NameOfOrganisation" class="form-control">
+                            </div>
+
+
+                            <div class="form-item">
+                                <label for="address" class="control-label">Address</label>
+                                <textarea id="address" name="Address" class="form-control">@Model.Hirer.Address</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="description" class="control-label">Description</label>
+                                <textarea id="description" name="Description" class="form-control">@Model.Hirer.Description</textarea>
+                            </div>
+
+                            <div class="form-item">
+                                <input id="save" type="checkbox" name="SaveMessage" value="true" />
+                                <label for="save" class="control-label">Save message</label>
+                            </div>
+
+
+                            <div class="col_full" style="margin-left: 20px">
+                                <button type="submit" class="btn btn-info">Send Mail</button>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button style="display: none" id="triggerModal" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#mailModal">Launch modal</button>
+
+
+@section Scripts{
+    <script src="~/Content/User/js/components/moment.js"></script>
+    <script src="~/Scripts/ckeditor.js"></script>
+    <script>
+        $(function () {
+
+            // When you click on invite
+            $("#applicantsBody").on("click", ".invite", function (e) {
+                var $this = $(this);
+                e.preventDefault();
+                var $userName = $this.parent().parent().find(".userName").find("a").text();
+                var $email = $this.parent().parent().find(".userEmail").text();
+                var $userId = $this.parent().parent().find(".userId").text();
+
+                $("#recipientName").text($userName);
+                $("#recipientEmail").text($email);
+                $("#formUsername").val($userId);
+
+
+                $("#triggerModal").click();
+            });
+
+
+
+            ClassicEditor
+                .create(document.querySelector('#message'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            ClassicEditor
+                .create(document.querySelector('#address'), {
+                    removePlugins: ['Insert image', 'Insert media', 'Block quote', 'Link'],
+                    toolbar: ['heading', 'bold', 'italic', 'bulletedList', 'numberedList']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+}
