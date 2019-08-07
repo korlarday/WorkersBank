@@ -19,6 +19,7 @@ namespace WorkersBank.Models.Data
         public DateTime TimeCreated { get; set; }
         public int NumberApplied { get; set; }
         public string Slug { get; set; }
+        public string Type { get; set; }
 
         [ForeignKey("CreatedBy")]
         public virtual UsersDTO User { get; set; }

@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>DASHBOARD</h2>
+    </div>
+
+    <!-- Widgets -->
+    <div class="row clearfix">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-pink hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">face</i>
+                </div>
+                <div class="content">
+                    <div class="text">CUSTOMERS</div>
+                    <div class="number count-to" data-from="0" data-to="@ViewBag.NumberOfCustomers" data-speed="15" data-fresh-interval="20"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-cyan hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">assignment</i>
+                </div>
+                <div class="content">
+                    <div class="text">JOB SEEKERS</div>
+                    <div class="number count-to" data-from="0" data-to="@ViewBag.NumberOfSeeker" data-speed="15" data-fresh-interval="20"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box bg-light-green hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">group</i>
+                </div>
+                <div class="content">
+                    <div class="text">HIRER</div>
+                    <div class="number count-to" data-from="0" data-to="@ViewBag.NumberOfHirer" data-speed="15" data-fresh-interval="20"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/Admin/js/pages/widgets/infobox/infobox-2.js"></script>
+    <script>
+        $(function () {
+        });
+    </script>
+}
+

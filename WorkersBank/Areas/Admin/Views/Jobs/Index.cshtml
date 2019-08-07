@@ -1,0 +1,287 @@
+﻿@model IEnumerable<WorkersBank.Models.ViewModel.JobsVM>
+
+@{
+    ViewBag.Title = "Jobs";
+}
+
+<div class="container-fluid">
+    <div class="block-header">
+        <h2>Customers</h2>
+    </div>
+    <!-- Striped Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        List of Jobs
+                    </h2>
+                </div>
+
+                <div class="body table-responsive">
+                    <a href="#" data-toggle="modal" data-target="#newModal" class="btn bg-green waves-effect ml-1" id="createNew">Create New Job</a>
+                    <table class="table table-striped" id="job_table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>JOB NAME</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                            @{
+                                int count = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr id="@item.Id">
+                                        <th scope="row" class="count-item">@count</th>
+                                        <td style="display:none" class="id">@item.Id</td>
+                                        <td class="name">@item.JobName</td>
+                                        <td>
+                                            <a href="#" class="btn bg-teal waves-effect mr-1 edit_job">Edit</a>
+                                            <a href="#" class="btn bg-red waves-effect delete_job">Delete</a>
+                                        </td>
+                                    </tr>
+                                    ++count;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Striped Rows -->
+
+</div>
+
+<div class="modal fade" id="newModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title center">Job Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="form-horizontal">
+                            <div class="form-group" style="text-align:center">
+                                <label style="margin-top: 15px;margin-bottom:8px;" for="Profit">Enter Job Name</label>
+                                <div>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="job_name" placeholder="Job Name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="width: 100px;margin: 15px auto">
+                                <div>
+                                    <input id="submit_job" type="submit" value="Submit" class="btn bg-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-red waves-effect close-modal" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title center">Edit Job Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="form-horizontal">
+                            <div class="form-group" style="text-align:center">
+                                <label style="margin-top: 15px;margin-bottom:8px;" for="Profit">Enter Job Name</label>
+                                <div>
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" id="edit_job" placeholder="Job Name" />
+                                    </div>
+                                </div>
+                            </div>
+                                    <input type="hidden" id="numb" />
+
+                            <div style="width: 100px;margin: 15px auto">
+                                <div>
+                                    <input type="button" id="update_job" value="Submit" class="btn bg-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close-edit" class="btn bg-red waves-effect" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<a style="display: none" href="#" data-toggle="modal" data-target="#editModal" class="btn" id="openEdit">Open Edit</a>
+
+
+@*SCRIPTS*@
+
+@section Scripts{
+    <script>
+    $(function () {
+
+        // NEW DEPT START
+        var newJobButton = $("#submit_job");
+        var newJobText = $("#job_name");
+        var table = $("#job_table");
+
+        newJobText.keyup(function(e) {
+            if (e.keyCode == 13) {
+                newJobButton.click();
+            }
+        });
+
+        // SUBMITTING NEW JOB
+        newJobButton.click(function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            $this.attr("disabled", true);
+            var jobName = newJobText.val();
+            if (jobName.length < 2) {
+                alert("Job name must be at least 2 characters long.");
+                $this.attr("disabled", false);
+                return false;
+            }
+
+            var url = "/Admin/Jobs/AddNewJob";
+
+            $.post(url,
+                { jobName: jobName },
+                function (data) {
+
+                    if (data.JobName == "taken") {
+                        flash( 'The job name is already in use',{
+                            'bgColor': '#C0392B',
+                            'vPosition' : 'top',
+                        });
+                        $this.attr("disabled", false);
+                        return false;
+                    } else {
+                        if (!$("table#job_table").length) {
+                            location.reload();
+                        } else {
+                            $this.attr("disabled", false);
+                            $(".close_modal").click();
+                            flash( 'Job name has been added successsfully',{
+                                'bgColor': '#33CC33',
+                                'vPosition' : 'top',
+                            });
+
+                            $(".close-modal").click();
+
+                            newJobText.val("");
+                            var toAppend = $("table#job_table tbody tr:last").clone();
+                            toAppend.attr("id", data.Id);
+                            toAppend.children(".id").text(data.Id);
+                            toAppend.children(".count-item").text(data.Index);
+                            toAppend.children(".name").text(data.JobName);
+                            table.append($(toAppend).hide().fadeIn(1200));
+
+                        }
+                    }
+
+                });
+        })
+        // END
+
+        // For show edit
+        $("#job_table").on("click", ".edit_job", function(e) {
+            e.preventDefault();
+            $("#openEdit").click();
+            $this = $(this);
+            var id = $this.parent().parent().children(".id").text();
+            var name = $this.parent().parent().children(".name").text();
+            $("#edit_job").val(name);
+            $("#numb").val(id);
+        });
+        // END
+
+        // submit edit
+        var submitEdit = $("#update_job");
+        submitEdit.click(function (e) {
+            e.preventDefault();
+            $this = $(this);
+            $this.attr("disabled", true);
+
+            var editId = $("#numb").val();
+            var jobName = $("#edit_job").val();
+
+            if (jobName.length < 2) {
+                alert("Job name must be at least 2 characters long.");
+                $this.attr("disabled", false);
+                return false;
+            }
+
+            var url = "/Admin/Jobs/EditJob";
+
+            $.post(url,
+                { jobName: jobName, editId: editId },
+                function (data) {
+
+                    if (data.JobName == "taken") {
+                        flash( 'The Job name is already in use',{
+                            'bgColor': '#C0392B',
+                            'vPosition' : 'top',
+                        });
+                        $this.attr("disabled", false);
+                        return false;
+                    } else {
+
+                        $this.attr("disabled", false);
+                        $(".close-modal").click();
+                        flash( 'Job has been updated successsfully',{
+                            'bgColor': '#33CC33',
+                            'vPosition' : 'top',
+                        });
+
+                        $("#close-edit").click();
+
+
+                        $("#table_body").children("#" + data.Id).hide().fadeIn(1000);
+                        $("#table_body").children("#" + data.Id).children(".name").text(data.JobName);
+
+
+                    }
+
+                });
+        })
+        //END
+
+        /*
+         * Delete DEPT js
+         */
+        $("#job_table").on("click", ".delete_job", function(e) {
+            e.preventDefault();
+
+            if (!confirm("Are you sure you want to delete")) return false;
+            var $this = $(this);
+            var id = $this.parent().parent().children(".id").text();
+            var url = "/Admin/Jobs/DeleteJob";
+
+            $.post(url, { id: id }, function(data) {
+                if (data == "success") {
+                    $this.parent().parent().fadeOut("slow", function() {
+                        $(this).remove();
+                    })
+                }
+            })
+        })
+
+        ////////////////////////////////////////////////////////////////////
+    });
+    </script>
+}

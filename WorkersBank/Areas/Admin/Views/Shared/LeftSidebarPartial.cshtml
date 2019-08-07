@@ -1,0 +1,60 @@
+﻿
+    <aside id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        
+        @Html.Action("UserInfoPartial", "Dashboard", new { area = "Admin" })
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="active" style="display: none">
+                    <a href="/Admin/Dashboard">
+                        <i class="material-icons">home</i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Dashboard">
+                        <i class="material-icons">home</i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Customers">
+                        <i class="material-icons">group</i>
+                        <span>Customers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Jobs">
+                        <i class="material-icons">info</i>
+                        <span>Jobs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Customers/manage-users">
+                        <i class="material-icons">group</i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i class="material-icons">subdirectory_arrow_left</i>
+                        <span>Back to user view</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                &copy; 2019 <a href="javascript:void(0);">WorkersBank</a>.
+            </div>
+            <div class="version">
+                <b>Version: </b> 1.0.5
+            </div>
+        </div>
+        <!-- #Footer -->
+    </aside>

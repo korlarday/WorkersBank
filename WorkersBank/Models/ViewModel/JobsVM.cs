@@ -20,5 +20,6 @@ namespace WorkersBank.Models.ViewModel
 
         public int Id { get; set; }
         public string JobName { get; set; }
+        public int Index { get; set; }
     }
 }

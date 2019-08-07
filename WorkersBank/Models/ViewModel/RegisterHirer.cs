@@ -53,5 +53,9 @@ namespace WorkersBank.Models.ViewModel
 
         [Required]
         public string StateOfOrigin { get; set; }
+
+        [Required]
+        [Display(Name = "Residential Address")]
+        public string HomeAddress { get; set; }
     }
 }

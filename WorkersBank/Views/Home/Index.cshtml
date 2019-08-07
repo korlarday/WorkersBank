@@ -19,25 +19,17 @@
 
         <div>
             <div class="row">
+                <h3 style="margin: auto">Search For Job Applicants</h3>
                 <div class="card col-md-6 offset-md-3">
-                    <div class="card-body" style="padding: 40px;">
-                        <h3>Search For Job Applicants</h3>
+                    <div class="card-body" style="padding: 10px;">
                         @using (Html.BeginForm("search-applicants", "Home", FormMethod.Get))
                         {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+                            <p>Note: All fields are optional.</p>
 
                             <div class="col_full">
-                                @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="col_full">
-                                @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="col_full">
@@ -58,9 +50,19 @@
                                 @Html.ValidationMessageFor(model => model.Job, "", new { @class = "text-danger" })
                             </div>
 
+                            <div class="col_full">
+                                <input type="radio" id="male" name="Gender" value="Male" />
+                                <label class="control-label" for="male">Male</label>
+                            </div>
+
+                            <div class="col_full">
+                                <input type="radio" id="female" name="Gender" value="Female" />
+                                <label class="control-label" for="female">Female</label>
+                            </div>
+
 
                             <div class="col_full nobottommargin">
-                                <button class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Search</button>
+                                <button class="button button-3d btn-success nomargin" type="submit">Search</button>
 
                             </div>
                         }

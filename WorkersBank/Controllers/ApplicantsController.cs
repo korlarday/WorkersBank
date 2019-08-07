@@ -118,7 +118,8 @@ namespace WorkersBank.Controllers
                     CreatedBy = userId,
                     TimeCreated = DateTime.Now,
                     NumberApplied = 0,
-                    Slug = slug
+                    Slug = slug,
+                    Type = "General"
                 };
                 db.JobPosts.Add(newJob);
                 db.SaveChanges();
@@ -136,7 +137,7 @@ namespace WorkersBank.Controllers
             List<JobPostVM> model;
             using(Db db = new Db())
             {
-                model = db.JobPosts.OrderByDescending(x=> x.TimeCreated).ToArray().Select(x => new JobPostVM(x)).ToList();
+                model = db.JobPosts.Where(x => x.Type == "General").OrderByDescending(x=> x.TimeCreated).ToArray().Select(x => new JobPostVM(x)).ToList();
             }
             return View("JobPosts", model);
         }
@@ -342,7 +343,7 @@ namespace WorkersBank.Controllers
                 UsersDTO user = db.Users.SingleOrDefault(x => x.Username == username);
 
                 // count invitations
-                int MessageNum = db.JobApplieds.Where(x => x.UserId == user.Id && x.UserRespond == false).Count();
+                int MessageNum = db.JobApplieds.Where(x => x.UserId == user.Id && x.UserRespond == false && x.InvitationSent == true).Count();
 
                 // Build the model
                 model = new InvitationPartialVM()

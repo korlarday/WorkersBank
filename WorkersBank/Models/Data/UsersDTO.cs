@@ -25,5 +25,6 @@ namespace WorkersBank.Models.Data
         public string PassportName { get; set; }
         public string StateOfOrigin { get; set; }
         public string CV { get; set; }
+        public string Address { get; set; }
     }
 }

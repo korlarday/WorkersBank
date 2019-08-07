@@ -25,17 +25,23 @@ namespace WorkersBank.Models.ViewModel
             SentBy = row.SentBy;
             Recipient = row.Recipient;
             TimeSent = row.TimeSent;
+            Type = row.Type;
             Sender = new UsersVM(row.Sender);
             Reciever = new UsersVM(row.Reciever);
         }
 
         public int Id { get; set; }
+        [Required]
         public string Subject { get; set; }
+        [Required]
         [AllowHtml]
         public string Message { get; set; }
+        [Required]
         public string NameOfCompany { get; set; }
+        [Required]
         [AllowHtml]
         public string Address { get; set; }
+        [Required]
         [AllowHtml]
         public string Description { get; set; }
         public int? SentBy { get; set; }
@@ -44,6 +50,8 @@ namespace WorkersBank.Models.ViewModel
         public string Slug { get; set; }
         public string Username { get; set; }
         public bool SaveMessage { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
 
         public UsersVM Sender { get; set; }
         public UsersVM Reciever { get; set; }

@@ -55,6 +55,12 @@
                                 </div>
 
                                 <div class="col-md-4 form-item">
+                                    @Html.LabelFor(model => model.HomeAddress, htmlAttributes: new { @class = "control-label" }) <span class="required-red">*</span>
+                                    @Html.EditorFor(model => model.HomeAddress, new { htmlAttributes = new { @class = "form-control tleft format" } })
+                                    @Html.ValidationMessageFor(model => model.HomeAddress, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-4 form-item">
                                     <label for="state">State Of Origin:</label> <span class="required-red">*</span>
                                     <select class="form-control" id="state" name="StateOfOrigin" required>
                                         <option value="" selected>-- Select your state --</option>
@@ -115,19 +121,19 @@
 
                                     <div class="col-md-6 form-item">
                                         @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" }) <span class="required-red">*</span>
-                                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control", id="addressE" })
+                                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control", id = "addressE" })
                                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                                     </div>
 
                                     <div class="col-md-6 form-item">
                                         @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
-                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", id="descriptionE" })
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", id = "descriptionE" })
                                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
                                 <div class="col_full" style="margin-left: 20px">
-                                    <button type="submit" class="button button-3d button-black nomargin">Register</button>
+                                    <button type="submit" class="button button-3d button-blue nomargin">Register</button>
 
                                 </div>
                             </div>

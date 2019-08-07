@@ -29,7 +29,8 @@ namespace WorkersBank
                       "~/Content/Admin/js/demo.js",
                       "~/Content/User/js/components/moment.js",
                       "~/Scripts/custom.js",
-                      "~/Content/Admin/plugins/jquery-countto/jquery.countTo.js"
+                      "~/Content/Admin/plugins/jquery-countto/jquery.countTo.js",
+                      "~/Scripts/flash.js"
                       ));
 
             bundles.Add(new StyleBundle("~/admin_css").Include(
@@ -49,7 +50,8 @@ namespace WorkersBank
                       "~/Content/User/css/magnific-popup.css",
                       "~/Content/User/css/responsive.css",
                       "~/Content/User/custom.css",
-                      "~/Content/Site.css"
+                      "~/Content/Site.css",
+                      "~/Content/userSide.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/user_js").Include(

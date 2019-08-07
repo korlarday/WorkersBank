@@ -23,6 +23,7 @@ namespace WorkersBank.Models.ViewModel
             TimeCreated = row.TimeCreated;
             NumberApplied = row.NumberApplied;
             Slug = row.Slug;
+            Type = row.Type;
             User = new UsersVM(row.User);
         }
 
@@ -39,6 +40,7 @@ namespace WorkersBank.Models.ViewModel
         public DateTime TimeCreated { get; set; }
         public int NumberApplied { get; set; }
         public string Slug { get; set; }
+        public string Type { get; set; }
 
         public UsersVM User { get; set; }
     }

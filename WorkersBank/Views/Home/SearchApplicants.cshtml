@@ -1,0 +1,75 @@
+﻿@model IEnumerable<WorkersBank.Models.ViewModel.UsersVM>
+
+@{
+    ViewBag.Title = "Search Applicants";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<!-- Content
+============================================= -->
+<section id="content">
+
+    <div class="content-wrap">
+
+        <div class="container clearfix">
+            <div class="fancy-title title-bottom-border">
+                <h3>Job Applicants</h3>
+            </div>
+            @if (TempData["SM"] != null)
+            {
+                <div class="style-msg successmsg">
+                    <div class="sb-msg">@TempData["SM"]</div>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                </div>
+            }
+
+            <div>
+
+                @if (!Model.Any())
+                {
+                    <p>No record found.</p>
+                }
+                else
+                {
+                    <p>Number of records found: @ViewBag.ResultNumber</p>
+                    <div class="row">
+                        @foreach (var item in ViewBag.OnePageOfApplicants)
+                        {
+                            <div class="col-sm-4 col-12 col-md-3">
+                                <div class="card" style="margin: 5px">
+                                    <a href="/Home/view-profile/@item.Username">
+                                        <div class="card-body">
+                                            <div class="photo" style="max-width:100px;margin:auto">
+                                                @if (item.PassportName == null)
+                                                {
+                                                    <img class="img-circle" style="width: 100%" src="/Images/img/avatar.jpg" alt="passport" />
+                                                }
+                                                else
+                                                {
+                                                    <img class="img-circle" style="width: 100%" src="/Images/Uploads/Passports/@item.Id/Thumbs/@item.PassportName" alt="passport" />
+                                                }
+                                            </div>
+                                            <p class="center" style="margin-bottom: 0">
+                                                @item.Firstname @item.Surname <br />
+                                                @item.Gender
+                                            </p>
+
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @Html.PagedListPager((IPagedList)ViewBag.OnePageOfApplicants, page => Url.Action("search-applicants", new { page }))
+                }
+            </div>
+
+        </div>
+    </div>
+
+</section><!-- #content end -->

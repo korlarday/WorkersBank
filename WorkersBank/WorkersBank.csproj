@@ -58,6 +58,9 @@
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -132,6 +135,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\JobsController.cs" />
+    <Compile Include="Areas\Admin\Models\AuthorizeVM.cs" />
+    <Compile Include="Areas\Admin\Models\ManageUsersVM.cs" />
+    <Compile Include="Areas\Admin\Models\SetAuthorization.cs" />
+    <Compile Include="Areas\Admin\Models\UserNavPartialVM.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ApplicantsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -3472,6 +3483,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\userSide.css" />
     <Content Include="Content\User\css\animate.css" />
     <Content Include="Content\User\css\bootstrap-rtl.css" />
     <Content Include="Content\User\css\bootstrap.css" />
@@ -7805,8 +7818,21 @@
     <Content Include="Content\User\js\components\tinymce\skins\ui\oxide\skin.min.css.map" />
     <Content Include="Content\User\js\components\tinymce\skins\ui\oxide\skin.mobile.min.css.map" />
     <Content Include="Content\States.json" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\LeftSidebarPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\RightSidebarPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\TopBarPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\UserInfoPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Jobs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\ManageUsers.cshtml" />
+    <Content Include="Areas\Admin\Views\Customers\ViewPreviledges.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ckeditor.js" />
+    <Content Include="Scripts\flash.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -7849,6 +7875,8 @@
     <Content Include="Views\Applicants\ViewProfile.cshtml" />
     <Content Include="Views\Applicants\InvitationPartial.cshtml" />
     <Content Include="Views\Applicants\Invitations.cshtml" />
+    <Content Include="Views\Home\SearchApplicants.cshtml" />
+    <Content Include="Views\Home\ViewProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\User\include\twitter\cache\" />

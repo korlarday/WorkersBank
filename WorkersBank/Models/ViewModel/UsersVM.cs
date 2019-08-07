@@ -29,6 +29,7 @@ namespace WorkersBank.Models.ViewModel
             PassportName = row.PassportName;
             StateOfOrigin = row.StateOfOrigin;
             CV = row.CV;
+            Address = row.Address;
         }
 
         public int Id { get; set; }
@@ -65,5 +66,6 @@ namespace WorkersBank.Models.ViewModel
         [Required]
         public string StateOfOrigin { get; set; }
         public string CV { get; set; }
+        public string Address { get; set; }
     }
 }

@@ -149,6 +149,7 @@ namespace WorkersBank.Controllers
                 newUser.PhoneNumber = model.PhoneNumber;
                 newUser.Email = model.Email;
                 newUser.StateOfOrigin = model.StateOfOrigin;
+                newUser.Address = model.HomeAddress;
                 db.Users.Add(newUser);
                 db.SaveChanges();
 
@@ -234,6 +235,7 @@ namespace WorkersBank.Controllers
                 newUser.PhoneNumber = model.PhoneNumber;
                 newUser.Email = model.Email;
                 newUser.StateOfOrigin = model.StateOfOrigin;
+                newUser.Address = model.HomeAddress;
                 db.Users.Add(newUser);
                 db.SaveChanges();
 
@@ -436,6 +438,7 @@ namespace WorkersBank.Controllers
 
                 
             }
+            TempData["SM"] = "Your basic information was updated successfully.";
             return RedirectToAction("my-profile");
         }
 
@@ -474,6 +477,7 @@ namespace WorkersBank.Controllers
                     db.JobSeekers.Add(newSeeker);
                     db.SaveChanges();
                 }
+                TempData["SM"] = "Your career information was updated successfully.";
                 return RedirectToAction("my-profile");
             }
         }
@@ -498,6 +502,7 @@ namespace WorkersBank.Controllers
                 hirer.Description = model.Description;
                 db.SaveChanges();
             }
+            TempData["SM"] = "Company information was updated successfully.";
             return RedirectToAction("my-profile");
         }
 
@@ -536,7 +541,7 @@ namespace WorkersBank.Controllers
                     db.SaveChanges();
                 }
             }
-            TempData["SM"] = "Your jobs profile has been updated successfully";
+            TempData["SM"] = "Your jobs profile was updated successfully";
             return RedirectToAction("my-profile");
         }
 
@@ -639,7 +644,7 @@ namespace WorkersBank.Controllers
                 #endregion
             }
 
-            TempData["SM"] = "CV uploaded successfully";
+            TempData["SM"] = "CV was uploaded successfully";
             return RedirectToAction("my-profile");
         }
 

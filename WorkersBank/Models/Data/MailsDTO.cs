@@ -18,6 +18,7 @@ namespace WorkersBank.Models.Data
         public int? SentBy { get; set; }
         public int? Recipient { get; set; }
         public DateTime? TimeSent { get; set; }
+        public string Type { get; set; }
 
         [ForeignKey("SentBy")]
         public virtual UsersDTO Sender { get; set; }

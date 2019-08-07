@@ -1,0 +1,12 @@
+﻿
+.tabs.tabs-bb ul.tab-nav li.ui-tabs-active a {
+    border-bottom: 2px solid #00086f !important;
+}
+
+.btn-success {
+    border-color: #00086f !important;
+    background-color: #00086f !important
+}
+.fancy-title.title-bottom-border h3 {
+    border-bottom: 2px solid #00086f !important;
+}
